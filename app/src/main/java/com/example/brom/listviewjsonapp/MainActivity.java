@@ -4,8 +4,14 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,15 +37,39 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*List<String> listData = new ArrayList<String>(Arrays.asList(mountainNames));
+    List<String> listData = new ArrayList<String>(Arrays.asList(mountainNames));
     ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.list_item_textview,R.id.my_item_textview,listData);
     ListView myListView = (ListView)findViewById(R.id.my_listview);
-        myListView.setAdapter(adapter);*/
+        myListView.setAdapter(adapter);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        new FetchData().execute();
+
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == R.id.action_settings){
+            return true;
+        }
+        else if (id == R.id.action_refresh){
+            //adapter.clear();
+            new FetchData().execute();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class FetchData extends AsyncTask<Void,Void,String>{
@@ -112,6 +142,25 @@ public class MainActivity extends AppCompatActivity {
             // Implement a parsing code that loops through the entire JSON and creates objects
             // of our newly created Mountain class.
                 Log.d("Hej", o);
+
+            try {
+
+                JSONArray MountainArray = new JSONArray(o);
+
+                Log.d("hejsan", MountainArray.toString());
+
+                for ( int i = 0; i < MountainArray.length(); i++) {
+                    JSONObject Berg = MountainArray.getJSONObject(i);
+                    String bergnamn = Berg.getString("name");
+                    String bergplats = Berg.getString("location");
+                    int berghojd = Berg.getInt("size");
+                    Log.d("Hejdi", bergnamn+" "+bergplats+" "+berghojd);
+                }
+            }
+
+            catch (JSONException e){
+                e.printStackTrace();
+            }
         }
     }
 }
