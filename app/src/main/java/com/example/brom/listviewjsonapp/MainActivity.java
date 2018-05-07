@@ -37,10 +37,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<String> listData = new ArrayList<String>(Arrays.asList(mountainNames));
-    ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.list_item_textview,R.id.my_item_textview,listData);
-    ListView myListView = (ListView)findViewById(R.id.my_listview);
-        myListView.setAdapter(adapter);
+    List<Berg> listData = new ArrayList<>();
+    ArrayAdapter adapter;
+    ListView myListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,12 +154,21 @@ public class MainActivity extends AppCompatActivity {
                     String bergplats = Berg.getString("location");
                     int berghojd = Berg.getInt("size");
                     Log.d("Hejdi", bergnamn+" "+bergplats+" "+berghojd);
+
+                    Berg m1 = new Berg(bergnamn, bergplats, berghojd);
+                    listData.add(m1);
                 }
             }
 
             catch (JSONException e){
                 e.printStackTrace();
             }
+
+            myListView = (ListView) findViewById(R.id.my_listview);
+            adapter = new ArrayAdapter(getApplicationContext(), R.layout.list_item_textview, R.id.my_item_textview, listData);
+
+            myListView.setAdapter(adapter);
+
         }
     }
 }
