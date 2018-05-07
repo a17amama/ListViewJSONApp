@@ -37,6 +37,17 @@ public class Berg {
     public void setHeight(int newHeight) {
         height=newHeight;
     }
+
+    public String getName(){
+        return name;
+    }
+    public String getLocation(){
+        return location;
+    }
+
+    public int getHeight(){
+        return height;
+    }
 }
 
 
