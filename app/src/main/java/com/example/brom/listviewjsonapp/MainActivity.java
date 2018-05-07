@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +26,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static android.R.attr.duration;
 
 
 // Create a new class, Mountain, that can hold your JSON data
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         new FetchData().execute();
 
         setContentView(R.layout.activity_main);
+
+        myListView = (ListView) findViewById(R.id.my_listview);
+
 
 
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,12 +91,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if (id == R.id.action_settings){
-            return true;
-        }
-        else if (id == R.id.action_refresh){
-            //adapter.clear();
+
+        if (id == R.id.action_refresh){
+            adapter.clear();
             new FetchData().execute();
+
+            Toast.makeText(getApplicationContext(), "List have been refreshed", Toast.LENGTH_SHORT).show();
             return true;
         }
 

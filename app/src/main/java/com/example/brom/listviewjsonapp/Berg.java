@@ -16,11 +16,6 @@ public class Berg {
         height=inHeight;
     }
 
-    public Berg (String inName){
-        name=inName;
-        location="";
-        height=-1;
-    }
 
     public String toString() {return name;}
 
